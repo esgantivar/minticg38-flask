@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-
+from pymongo import MongoClient
 from controllers.students import StudentsController, StudentDoesNotExist
 
 from models.deparment import Department
@@ -79,6 +79,10 @@ def delete_student(id_student):
             "message": "el estudiante fue borrado"
         }), 200
 
+
+MONGO_STRING_CONNECTION = "mongodb+srv://minticg38:ciclo4a2022@clusterg38.veo0jfn.mongodb.net/?retryWrites=true&w=majority"
+
+client = MongoClient(MONGO_STRING_CONNECTION)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5001, debug=True)
