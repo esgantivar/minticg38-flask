@@ -1,9 +1,15 @@
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
-from controllers.students import StudentsController, StudentDoesNotExist
+from controllers.students import StudentsController
 
 from models.deparment import Department
+from models.student import StudentDoesNotExist
+from models.subject import Subject, SubjectDoesNotExist
+from repositories.deparment import DepartmentRepository
+from repositories.subject import SubjectRepository
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -79,6 +85,42 @@ def delete_student(id_student):
             "message": "el estudiante fue borrado",
             "result": result
         }), 200
+
+
+@app.route("/subject", methods=["POST"])
+def create_subject():
+    dep = DepartmentRepository().get_by_id("6350533306cdac4fe5bdbb4e")
+    subject = Subject(
+        name="Matemáticas",
+        course_credits=4,
+        department=dep
+    )
+    SubjectRepository().save(subject)
+    return jsonify()
+
+
+@app.route("/subject", methods=["GET"])
+def subject_all():
+    repo = SubjectRepository(Subject, SubjectDoesNotExist)
+    return jsonify({
+        "subjects": [i.to_json() for i in repo.get_all()]
+    })
+
+
+@app.route("/department", methods=["GET"])
+def department():
+    return jsonify({
+        "departments": [i.__dict__ for i in DepartmentRepository(Department).get_all()]
+    })
+
+
+@app.route("/department", methods=["POST"])
+def create_department():
+    body = request.get_json()
+    return jsonify(DepartmentRepository().save(Department(
+        name=body["name"],
+        description=body["description"]
+    )).__dict__)
 
 
 MONGO_STRING_CONNECTION = "mongodb+srv://minticg38:ciclo4a2022@clusterg38.veo0jfn.mongodb.net/?retryWrites=true&w=majority"
