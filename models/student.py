@@ -2,6 +2,8 @@ from models.abstract import AbstractModel
 
 
 class Student(AbstractModel):
+    COLLECTION_NAME = "students"
+
     cedula = None
     first_name = None
     last_name = None
@@ -9,11 +11,11 @@ class Student(AbstractModel):
 
     def __init__(
         self,
-        _id,
         cedula,
         first_name,
         last_name,
         email,
+        _id=None,
     ):
         super().__init__(_id)
         self.cedula = cedula

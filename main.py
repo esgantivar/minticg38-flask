@@ -28,7 +28,7 @@ def students():
     })
 
 
-@app.route("/students/<int:id_student>", methods=["GET"])
+@app.route("/students/<string:id_student>", methods=["GET"])
 def get_student_by_id(id_student):
     try:
         student = students_controller.get_by_id(id_student)
@@ -49,7 +49,7 @@ def create_student():
     }), 201
 
 
-@app.route("/students/<int:id_student>", methods=["PUT"])
+@app.route("/students/<string:id_student>", methods=["PUT"])
 def update_student(id_student):
     try:
         student = students_controller.update(
@@ -66,17 +66,18 @@ def update_student(id_student):
         })
 
 
-@app.route("/students/<int:id_student>", methods=["DELETE"])
+@app.route("/students/<string:id_student>", methods=["DELETE"])
 def delete_student(id_student):
     try:
-        students_controller.delete(id_student)
+        result = students_controller.delete(id_student)
     except StudentDoesNotExist:
         return jsonify({
             "error": "error"
         }), 404
     else:
         return jsonify({
-            "message": "el estudiante fue borrado"
+            "message": "el estudiante fue borrado",
+            "result": result
         }), 200
 
 

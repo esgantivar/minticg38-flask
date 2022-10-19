@@ -3,8 +3,9 @@ from abc import ABCMeta
 
 class AbstractModel(metaclass=ABCMeta):
     _id = None
+    COLLECTION_NAME = ""
 
-    def __init__(self, _id):
+    def __init__(self, _id=None):
         """
         Crear el modelo
         """
