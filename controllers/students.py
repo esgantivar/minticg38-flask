@@ -17,12 +17,7 @@ class StudentsController(CRUDController):
 
     def create(self, content):
         return self.repo.save(
-            item=Student(
-                cedula=content["cedula"],
-                first_name=content["first_name"],
-                last_name=content["last_name"],
-                email=content["email"]
-            )
+            item=Student.factory(content)
         )
 
     def update(self, id_student, content):
@@ -34,7 +29,8 @@ class StudentsController(CRUDController):
         return self.repo.save(student)
 
     def delete(self, id_student):
-        return self.delete(id_student)
+        student = self.get_by_id(id_student)
+        return self.repo.delete(student)
 
     def count(self):
         return self.repo.count()

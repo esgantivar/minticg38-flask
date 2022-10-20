@@ -37,7 +37,7 @@ class Subject(AbstractModel):
             name=doc["name"],
             course_credits=doc["course_credits"],
             department=department,
-            _id=parse_object_id(doc["_id"])
+            _id=str(doc["_id"]) if doc.get("_id") else None,
         )
 
     def to_json(self):

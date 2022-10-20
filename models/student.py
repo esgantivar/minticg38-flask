@@ -38,8 +38,11 @@ class Student(AbstractModel):
             last_name=doc["last_name"],
             first_name=doc["first_name"],
             email=doc["email"],
-            _id=str(doc["_id"]),
+            _id=str(doc["_id"]) if doc.get("_id") else None,
         )
+
+    def to_json(self):
+        return self.__dict__
 
 
 class StudentDoesNotExist(ItemDoesNotExist):

@@ -18,7 +18,7 @@ class AbstractRepository(ABC):
     def __init__(
             self,
             model: Type[AbstractModel],
-            exception: Type[ItemDoesNotExist]=ItemDoesNotExist
+            exception: Type[ItemDoesNotExist] = ItemDoesNotExist
     ):
         self._client = MongoClient(MONGO_STRING_CONNECTION)
         self.database = self._client.get_database(DATABASE_NAME)

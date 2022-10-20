@@ -3,7 +3,7 @@ from utils import parse_object_id
 
 
 class Department(AbstractModel):
-    COLLECTION_NAME = "deparments"
+    COLLECTION_NAME = "departments"
 
     name = None
     description = None
@@ -24,7 +24,7 @@ class Department(AbstractModel):
         return Department(
             name=doc["name"],
             description=doc["description"],
-            _id=parse_object_id(doc["_id"]),
+            _id=str(doc["_id"]) if doc.get("_id") else None,
         )
 
     def to_json(self):
