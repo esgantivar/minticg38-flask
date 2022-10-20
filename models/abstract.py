@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 
 class AbstractModel(metaclass=ABCMeta):
@@ -11,4 +11,18 @@ class AbstractModel(metaclass=ABCMeta):
         """
         self._id = _id
 
+    def is_new(self) -> bool:
+        return not self._id
+
+    @abstractmethod
+    def prepare_to_save(self):
+        raise NotImplemented
+
+    @abstractmethod
+    def to_json(self):
+        raise NotImplemented
+
+    @staticmethod
+    def create(doc):
+        raise NotImplemented
 
