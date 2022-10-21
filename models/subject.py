@@ -1,6 +1,6 @@
 from bson import DBRef, ObjectId
 
-from models.abstract import AbstractModel
+from models.abstract import AbstractModel, ElementDoesNotExist
 from models.deparment import Department
 
 
@@ -18,21 +18,27 @@ class Subject(AbstractModel):
         self.department = department
 
     def prepare_to_save(self):
-        return {
-            "name": self.name,
-            "course_credits": self.course_credits,
-            "department": DBRef(
+        department_db_ref = None
+        if self.department:
+            department_db_ref = DBRef(
                 id=ObjectId(self.department._id),
                 collection=Department.COLLECTION_NAME
             )
+        return {
+            "name": self.name,
+            "course_credits": self.course_credits,
+            "department": department_db_ref
         }
 
     def to_json(self):
+        department = None
+        if self.department:
+            department = self.department.to_json()
         return {
             "_id": self._id,
             "name": self.name,
             "course_credits": self.course_credits,
-            "department": self.department.to_json()
+            "department": department
         }
 
     @staticmethod
@@ -48,5 +54,5 @@ class Subject(AbstractModel):
         )
 
 
-class SubjectDoesNotExist(Exception):
+class SubjectDoesNotExist(ElementDoesNotExist):
     pass

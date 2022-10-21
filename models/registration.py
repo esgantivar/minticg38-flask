@@ -1,6 +1,6 @@
 from bson import DBRef, ObjectId
 
-from models.abstract import AbstractModel
+from models.abstract import AbstractModel, ElementDoesNotExist
 from models.student import Student
 from models.subject import Subject
 
@@ -67,7 +67,7 @@ class Registration(AbstractModel):
         )
 
 
-class RegistrationDoesNotExist(Exception):
+class RegistrationDoesNotExist(ElementDoesNotExist):
     pass
 
 

@@ -4,18 +4,19 @@ from typing import Type
 from bson import ObjectId, DBRef
 from pymongo import MongoClient
 
-from models.abstract import AbstractModel
+from models.abstract import AbstractModel, ElementDoesNotExist
 
 MONGO_STRING_CONNECTION = "mongodb+srv://minticg38:ciclo4a2022@clusterg38.veo0jfn.mongodb.net/?retryWrites=true&w=majority"
-DATABASE_NAME = "academico"
+DATABASE_NAME = "academic"
 
 
 class AbstractRepository(ABC):
-    def __init__(self, model: Type[AbstractModel]):
+    def __init__(self, model: Type[AbstractModel], does_not_exist: Type[ElementDoesNotExist]):
         self._client = MongoClient(MONGO_STRING_CONNECTION)
         self.database = self._client.get_database(DATABASE_NAME)
         self.collection = self.database.get_collection(model.COLLECTION_NAME)
         self.model = model
+        self.does_not_exist = does_not_exist
 
     def save(self, item: AbstractModel):
         if item.is_new():
@@ -51,7 +52,7 @@ class AbstractRepository(ABC):
             "_id": ObjectId(id_item)
         })
         if not doc:
-            raise Exception
+            raise self.does_not_exist
         self._fill_db_ref(doc)
         return self.model.create(doc)
 

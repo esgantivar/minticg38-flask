@@ -26,3 +26,8 @@ class AbstractModel(metaclass=ABCMeta):
     def create(doc):
         raise NotImplemented
 
+
+class ElementDoesNotExist(Exception):
+    pass
+
+

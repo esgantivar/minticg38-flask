@@ -1,7 +1,8 @@
-from models.abstract import AbstractModel
+from models.abstract import AbstractModel, ElementDoesNotExist
 
 
 class Department(AbstractModel):
+    COLLECTION_NAME = "departments"
     name = None
     description = None
 
@@ -28,3 +29,5 @@ class Department(AbstractModel):
         )
 
 
+class DepartmentDoesNotExist(ElementDoesNotExist):
+    pass

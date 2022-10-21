@@ -1,5 +1,5 @@
 from controllers.abstract import CRUDController
-from models.student import Student
+from models.student import Student, StudentDoesNotExist
 
 from repositories.student import StudentRepository
 
@@ -8,7 +8,8 @@ class StudentsController(CRUDController):
 
     def __init__(self):
         self.repository = StudentRepository(
-            model=Student
+            model=Student,
+            does_not_exist=StudentDoesNotExist
         )
 
     def get_all(self):

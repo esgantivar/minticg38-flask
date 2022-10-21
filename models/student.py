@@ -1,4 +1,4 @@
-from models.abstract import AbstractModel
+from models.abstract import AbstractModel, ElementDoesNotExist
 
 
 class Student(AbstractModel):
@@ -48,5 +48,5 @@ class Student(AbstractModel):
         )
 
 
-class StudentDoesNotExist(Exception):
+class StudentDoesNotExist(ElementDoesNotExist):
     pass
