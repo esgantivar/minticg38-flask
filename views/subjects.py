@@ -30,6 +30,50 @@ def create():
     })
 
 
+@subjects_bp.route("/<string:id_subject>", methods=["GET"])
+def get_by_id(id_subject):
+    try:
+        student = subject_controller.get_by_id(id_subject)
+    except SubjectDoesNotExist:
+        return jsonify({
+            "error": "La materia no existe"
+        }), 404
+    else:
+        return jsonify(student.__dict__)
+
+
+@subjects_bp.route("/<string:id_subject>", methods=["PUT"])
+def update(id_subject):
+    try:
+        student = subject_controller.update(
+            id_subject,
+            request.get_json()
+        )
+    except SubjectDoesNotExist:
+        return jsonify({
+            "error": "error"
+        }), 404
+    else:
+        return jsonify({
+            "subject": student.__dict__
+        })
+
+
+@subjects_bp.route("/<string:id_subject>", methods=["DELETE"])
+def delete(id_subject):
+    try:
+        result = subject_controller.delete(id_subject)
+    except SubjectDoesNotExist:
+        return jsonify({
+            "error": "error"
+        }), 404
+    else:
+        return jsonify({
+            "message": "La materia fue borrada fue borrado",
+            "result": result
+        }), 200
+
+
 @subjects_bp.route("/<string:id_subject>/department/<string:id_department>", methods=["PUT"])
 def set_department_to_subject(id_subject, id_department):
     try:

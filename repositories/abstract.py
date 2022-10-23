@@ -5,6 +5,7 @@ from bson import ObjectId, DBRef
 from pymongo import MongoClient
 
 from models.abstract import AbstractModel, ElementDoesNotExist
+from models.subject import Subject
 
 MONGO_STRING_CONNECTION = "mongodb+srv://minticg38:ciclo4a2022@clusterg38.veo0jfn.mongodb.net/?retryWrites=true&w=majority"
 DATABASE_NAME = "academic"
@@ -67,3 +68,22 @@ class AbstractRepository(ABC):
                     "_id": value.id
                 })
                 doc[key] = doc_related
+                if doc_related and isinstance(doc_related, dict):
+                    self._fill_db_ref(doc_related)
+
+    def find_by_query(self, query):
+        items = []
+        for doc in self.collection.find(query):
+            self._fill_db_ref(doc)
+            items.append(self.model.create(doc))
+        return items
+
+    def calc_aggregation(self, pipeline):
+        items = []
+        for i in self.collection.aggregate(pipeline):
+            self._fill_db_ref(i)
+            i["_id"] = Subject.create(i["_id"]).to_json()
+            items.append(i)
+        return items
+
+

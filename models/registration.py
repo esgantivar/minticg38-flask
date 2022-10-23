@@ -29,6 +29,7 @@ class Registration(AbstractModel):
         self.subject = subject
 
     def prepare_to_save(self):
+        print("")
         return {
             "year": self.year,
             "semester": self.semester,
@@ -45,6 +46,7 @@ class Registration(AbstractModel):
 
     def to_json(self):
         return {
+            "_id": self._id,
             "year": self.year,
             "semester": self.semester,
             "grade": self.grade,
