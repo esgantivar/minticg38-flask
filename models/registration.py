@@ -29,7 +29,6 @@ class Registration(AbstractModel):
         self.subject = subject
 
     def prepare_to_save(self):
-        print("")
         return {
             "year": self.year,
             "semester": self.semester,
@@ -65,7 +64,8 @@ class Registration(AbstractModel):
             semester=doc.get("semester"),
             grade=doc.get("grade", 0),
             subject=subject,
-            student=student
+            student=student,
+            _id=str(doc["_id"]) if doc.get("_id") else None,
         )
 
 

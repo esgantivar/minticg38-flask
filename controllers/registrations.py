@@ -90,3 +90,8 @@ class RegistrationsController(CRUDController):
         ]
 
         return self.repository.calc_aggregation(pipeline)
+
+    def delete_by_student(self, id_student):
+        return self.repository.delete_many({
+            "student.$id": ObjectId(id_student)
+        })

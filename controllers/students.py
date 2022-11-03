@@ -42,3 +42,7 @@ class StudentsController(CRUDController):
     def count(self):
         return self.repository.count()
 
+    def assign_auth_id(self, id_student, auth_id):
+        student = self.get_by_id(id_student)
+        student.auth_id = auth_id
+        return self.repository.save(student)

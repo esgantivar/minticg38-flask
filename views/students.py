@@ -1,9 +1,11 @@
 from flask import jsonify, request, Blueprint
 
+from controllers.registrations import RegistrationsController
 from controllers.students import StudentsController
 from models.student import StudentDoesNotExist
 
 students_controller = StudentsController()
+registrations_controller = RegistrationsController()
 
 students_bp = Blueprint("students_blueprint", __name__)
 
@@ -71,3 +73,23 @@ def delete_student(id_student):
             "result": result
         }), 200
 
+
+@students_bp.route("<string:id_student>/delete-registrations", methods=["DELETE"])
+def delete_registrations_by_student(id_student):
+    student = students_controller.get_by_id(id_student)
+    return jsonify({
+        "delete_count": registrations_controller.delete_by_student(student._id).deleted_count
+    })
+
+
+@students_bp.route("<string:id_student>/auth/<string:auth_id>", methods=["PUT"])
+def assign_auth_id(id_student, auth_id):
+    try:
+        student = students_controller.assign_auth_id(id_student, auth_id)
+    except StudentDoesNotExist:
+        return jsonify({
+            "msg": "Estudiante no existe"
+        }), 404
+    return jsonify({
+        "student": student.to_json()
+    })
