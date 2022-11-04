@@ -96,6 +96,11 @@ class RegistrationsController(CRUDController):
             "student.$id": ObjectId(id_student)
         })
 
+    def get_by_student(self, id_student):
+        return self.repository.find_by_query({
+            "student.$id": ObjectId(id_student)
+        })
+
     def get_by_student_and_by_id(self, id_student, id_registration):
         registration = self.repository.find_one_by_query({
             "student.$id": ObjectId(id_student),
