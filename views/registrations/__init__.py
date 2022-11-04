@@ -1,9 +1,10 @@
 from flask import jsonify, Blueprint, request
 
 from controllers.registrations import RegistrationsController
-from models.registration import Registration, RegistrationDoesNotExist
-from models.student import Student, StudentDoesNotExist
-from models.subject import Subject, SubjectDoesNotExist
+from models.registration import RegistrationDoesNotExist
+from models.student import StudentDoesNotExist
+from models.subject import SubjectDoesNotExist
+from views.registrations.myself import myself_bp
 
 registrations_bp = Blueprint("registrations_bp", __name__)
 registration_controller = RegistrationsController()
@@ -76,12 +77,5 @@ def calc_avg_subject(id_subject, year, semester):
     )))
 
 
-@registrations_bp.route("student/<string:id_student>/registration/<string:id_registration>", methods=["GET"])
-def get_by_student_and_by_id(id_student, id_registration):
-    try:
-        item = registration_controller.get_by_student_and_by_id(id_student, id_registration)
-        return jsonify(item.to_json())
-    except RegistrationDoesNotExist:
-        return jsonify({
-            "msg": "err"
-        }), 404
+registrations_bp.register_blueprint(myself_bp, url_prefix="/student")
+
