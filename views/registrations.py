@@ -20,7 +20,7 @@ def get_all():
 def create():
     try:
         registration = registration_controller.create(request.get_json())
-        return jsonify(registration.to_json())
+        return jsonify(registration.to_json()), 201
     except StudentDoesNotExist:
         return jsonify({
             "message": f"el estudiante con id:... no existe"
@@ -74,3 +74,14 @@ def calc_avg_subject(id_subject, year, semester):
         year,
         semester
     )))
+
+
+@registrations_bp.route("student/<string:id_student>/registration/<string:id_registration>", methods=["GET"])
+def get_by_student_and_by_id(id_student, id_registration):
+    try:
+        item = registration_controller.get_by_student_and_by_id(id_student, id_registration)
+        return jsonify(item.to_json())
+    except RegistrationDoesNotExist:
+        return jsonify({
+            "msg": "err"
+        }), 404

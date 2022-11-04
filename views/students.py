@@ -93,3 +93,15 @@ def assign_auth_id(id_student, auth_id):
     return jsonify({
         "student": student.to_json()
     })
+
+
+@students_bp.route("/auth/<string:auth_id>", methods=["GET"])
+def find_by_auth_id(auth_id):
+    try:
+        student = students_controller.get_by_auth_id(auth_id)
+    except StudentDoesNotExist:
+        return jsonify({
+            "error": "error"
+        }), 404
+    else:
+        return jsonify(student.to_json()), 200

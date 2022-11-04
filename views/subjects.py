@@ -27,7 +27,7 @@ def create():
     subject = subject_controller.create(body)
     return jsonify({
         "subject": subject.to_json()
-    })
+    }), 201
 
 
 @subjects_bp.route("/<string:id_subject>", methods=["GET"])
@@ -39,7 +39,7 @@ def get_by_id(id_subject):
             "error": "La materia no existe"
         }), 404
     else:
-        return jsonify(student.__dict__)
+        return jsonify(student.to_json())
 
 
 @subjects_bp.route("/<string:id_subject>", methods=["PUT"])
@@ -55,7 +55,7 @@ def update(id_subject):
         }), 404
     else:
         return jsonify({
-            "subject": student.__dict__
+            "subject": student.to_json()
         })
 
 

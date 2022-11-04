@@ -46,3 +46,12 @@ class StudentsController(CRUDController):
         student = self.get_by_id(id_student)
         student.auth_id = auth_id
         return self.repository.save(student)
+
+    def get_by_auth_id(self, auth_id):
+        student = self.repository.find_one_by_query({
+            "auth_id": auth_id
+        })
+        if student:
+            return student
+        else:
+            raise StudentDoesNotExist

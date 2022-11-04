@@ -88,4 +88,9 @@ class AbstractRepository(ABC):
     def delete_many(self, query):
         return self.collection.delete_many(query)
 
+    def find_one_by_query(self, query):
+        doc = self.collection.find_one(query)
+        if doc:
+            self._fill_db_ref(doc)
+        return self.model.create(doc) if doc else None
 
